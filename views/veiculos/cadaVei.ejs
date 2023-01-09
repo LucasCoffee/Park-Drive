@@ -1,0 +1,77 @@
+<%- include("../partials/header.ejs"); %>
+
+<body>
+
+    <%- include("../partials/nav.ejs");  %>
+    
+    <div class="container">
+        <div class="card">
+            <form method="post" action="/registrarVeiculo">
+                <div class="card-header hearderCadastrar">
+                    <h2>Cadastrar veiculos</h2>
+                    <button class="btn btn-primary">Cadastrar</button>
+                </div>
+                <div class="card-body dados">
+                    <div class="card-header">
+                        <h3>Dados do veiculo</h3>
+                    </div>
+                    <div class="elementos">
+                        <label for="">Categoria</label>
+                        <select name="categoria" id="">
+                            <option value=""></option>
+                            <option value="1">Carro</option>
+                            <option value="2">Moto</option>
+                        </select>
+                    </div>
+                    <div class="elementos">
+                        <label for="">Modelo</label>
+                        <input type="text" name="modelo">
+                    </div>
+                    <div class="elementos">
+                        <label for="">Marca</label>
+                        <input type="text" name="marca">
+                    </div>
+                    <div class="elementos">
+                        <label for="">Placa</label>
+                        <input type="text" name="placa">
+                    </div>
+                </div>
+                <div class="card-header">
+                    <h2>Vaga</h2>
+                </div>
+                <div class="card-body dados">
+                    <div class="elementos">
+                        <label for="">Vaga</label>
+                        <select name="vaga" id="">
+                            <% vaga.forEach(vaga => { %>
+                                <option value="<%= vaga.numero %>"><%= vaga.numero %></option> 
+                            <% }) %>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card-header">
+                    <h2>Dados do motorista</h2>
+                </div>
+                <div class="card-body dados">
+                    <div class="elementos">
+                        <label for="">Selecione o motorista</label>
+                        <select name="motoristaID" id="">
+                            <% motoristas.forEach((motorista) => { %> 
+                                <% if (motorista.id == id) { %>
+                                <option value="<%= motorista.id %>" selected><%= motorista.nome %></option>
+
+                                <% }%>
+                            <% }) %> 
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+</body>
+</html>
+
+   <%- include("../partials/footer.ejs"); %>

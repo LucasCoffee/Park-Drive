@@ -1,0 +1,25 @@
+<%- include("../partials/header.ejs"); %>
+
+<body>
+    <%- include("../partials/nav.ejs");  %>
+
+    <div class="container">
+        <hr>
+        <h2 id="titulo"><%= titulo %> </h2>
+        <hr>
+        
+        <% clientes.forEach(cliente => { %> 
+            <br>
+            <div class="card">
+                <div class="card-body">
+                    <h3><%= cliente.nome %></h3>
+                    <a href="/listar/<%= cliente.id %>"><button class="btn btn-primary">Visualizar</button></a>
+                </div>
+            </div>
+        <% }) %>
+
+    </div>
+
+</body>
+
+<%- include("../partials/footer.ejs"); %>

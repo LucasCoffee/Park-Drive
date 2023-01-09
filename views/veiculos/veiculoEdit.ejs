@@ -1,0 +1,65 @@
+<%- include("../partials/header.ejs"); %>
+
+<body>
+
+    <%- include("../partials/nav.ejs");  %>
+    
+    <div class="container">
+        <div class="card">
+            <form method="post" action="/veiculos/salvarEdicao">
+                <div class="card-header hearderCadastrar">
+                    <h2>Cadastrar veiculos</h2>
+                    <button class="btn btn-primary">Salvar edição</button>
+                    <input type="hidden" name="id" value="<%= vei.id %>">
+                </div>
+                <div class="card-body dados">
+                    <div class="card-header">
+                        <h3>Dados do veiculo</h3>
+                    </div>
+                    <div class="elementos">
+                        <label for="">Categoria</label>
+                        <select name="categoria" id="">
+                            <% if ( vei.categoria == 1 ) {%>
+                            <option value="1" selected>Carro</option>
+                            <option value="2" >Moto</option>
+                            <% } else {%>
+                            <option value="1" >Carro</option>
+                            <option value="2" selected>Moto</option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="elementos">
+                        <label for="">Modelo:</label>
+                        <input type="text" value="<%= vei.modelo%>" name="modelo">
+                    </div>
+                    <div class="elementos">
+                        <label for="">Marca:</label>
+                        <input type="text" value="<%= vei.marca%>" name="marca">
+                    </div>
+                    <div class="elementos">
+                        <label for="">Placa</label>
+                        <input type="text" value="<%= vei.placa %>" name="placa">
+                    </div>
+                </div>
+                <div class="card-header">
+                    <h2>Vaga</h2>
+                </div>
+                <div class="card-body dados">
+                    <div class="elementos">
+                        <label for="">Vaga</label>
+                        <select name="vaga" id="">
+                            <% vaga.forEach(vaga => { %>
+                                <option value="<%= vaga.numero %>"><%= vaga.numero %></option> 
+                            <% }) %>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+</body>
+</html>
+
+   <%- include("../partials/footer.ejs"); %>

@@ -1,0 +1,33 @@
+<%- include("../partials/header.ejs"); %>
+
+<body>
+    <%- include("../partials/nav.ejs");  %>
+
+    <div class="container">
+        <divc class="card" >
+            <div class="card-header">
+                <h2>Vaga: <%= vaga.numero %></h2>
+            </div>
+            <div class="card-body dados">
+                <div class="card-header">
+                    <h4>Dados da vaga</h4>
+                </div>
+                <div class="elementos">
+                    <label  for="">Status:</label>
+                    <span><%= vaga.status %></span> 
+                </div>
+                <div class="elementos">
+                    <label for="">Tipo de vaga:</label>
+                    <span><%= vaga.tipoCli %></span>
+                </div>
+                <div class="elementos">
+                    <label for="">Carro ocupando:</label>
+                    <span><%= vaga.veiculo%></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<%- include("../partials/footer.ejs"); %>

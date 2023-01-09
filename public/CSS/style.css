@@ -1,0 +1,39 @@
+.dados{
+    background-color: rgb(193, 197, 202);
+    margin-bottom: 15px;
+    border-radius: 11px;
+    padding: 0px 0px 9px 9px;
+    margin: 10px;
+}
+.elementos{
+    padding-top: 7px;
+}
+
+label{
+    padding-right: 5px;
+}
+input, select{
+    border-radius: 8px;
+}
+
+.hearderCadastrar{
+    padding: 0px 20px 0px 20px;
+    margin: 10px 20px 0px 20px;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.pagamento{
+    display: flex;
+    justify-content: space-between;
+}
+
+.editarExcluir{
+    display: flex;
+    height: 38px;
+}
+
+.editarExcluir button {
+    margin-left: 5px;
+}

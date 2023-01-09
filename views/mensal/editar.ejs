@@ -1,0 +1,55 @@
+<%- include("../partials/header.ejs"); %>
+
+<body>
+
+    <%- include("../partials/nav.ejs");  %>
+  
+    <div class="container">
+        <div class="card">
+            <form method="post" action="/mensal/salvarEdicao">
+                <input type="hidden" name="id" value="<%= clientes.id%>">
+                <div class="card-header hearderCadastrar" >
+                    <h2>Editar cliente mensal</h2>
+                    <button class="btn btn-primary">Salvar edição</button>
+                </div>
+                <div class="card-body dados"  >
+                    <div class="card-header">
+                        <h4>Dados do motorista</h4>
+                    </div>
+                    <div class="elementos">
+                        <label  for="">Nome:</label>
+                        <input type="text" placeholder="Nome do cliente" name="nome" value="<%= clientes.nome%>">    
+                    </div>
+                    <div class="elementos">
+                        <label for="">CFP:</label>
+                        <input type="number" placeholder="CPF do cliente" maxlength="11" name="cpf" value="<%= clientes.cpf %>">
+                    </div>
+                    <div class="elementos">
+                        <label for="">Telefone do cliente:</label>
+                        <input type="tel" pattern="[0-9]{2} [0-9]({2}) [0-9]{5}-[0-9]{4}" placeholder="Número do cliente" 
+                            required name="telefone" value="<%= clientes.telefone %>">
+                    </div>
+                </div>
+                <div class="card-body dados">
+                    <div class="card-header">
+                        <h4>Dados da pagamento</h4>
+                    </div>
+                    <div class="elementos">
+                        <label for="">Dia de pagamento</label>
+                        <select name="diaPaga" value="<%= clientes.pagaDia %>">
+                            <option value="01">01</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>    
+</body>
+
+</html>
+
+<script src="../entradaDados.js"></script>
+
+<%- include("../partials/footer.ejs"); %>

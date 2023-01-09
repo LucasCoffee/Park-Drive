@@ -1,0 +1,38 @@
+<% include("../partials/header.ejs"); %>
+
+<body>
+    <%- include("../partials/nav.ejs");  %>
+
+    <div class="container">
+
+        <div class="card">
+            <div class="card-header">
+                <h1><%= veiculo.placa %></h1>
+            </div>
+
+            <div class="card-body">
+                <span>Tempo parado: <%= veiculo.totParado %></span>
+                <br>
+                <span>Data de inicio: <%= veiculo.dataEntrada %></span>
+                <br>
+                <span>Data de saida: <%= veiculo.dataSaida %></span>
+                <br>
+                <span>Valor a pagar: <%= veiculo.valorApagar%></span>
+            </div>
+
+            <div class="card-body" >
+                <a  href="http://localhost:1331/sair/<%= veiculo.placa %>" class="btn btn-primary">
+                    Registrar saida
+                </a>
+            </div>
+
+           
+
+        </div>
+
+    </div>
+
+</body>
+
+
+<%- include("../partials/footer.ejs"); %>

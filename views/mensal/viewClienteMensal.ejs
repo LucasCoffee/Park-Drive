@@ -1,0 +1,169 @@
+<%- include("../partials/header.ejs"); %>
+
+<body>
+    <%- include("../partials/nav.ejs");  %>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header hearderCadastrar">
+                <h2>Cliente Mensal: <span><%= clientes.nome %></span></h2>
+                <div class="editarExcluir">
+                    <input type="hidden" name="id" value="<%= clientes.id %>" >
+                    <a href="/mensal/editar/<%= clientes.id%>" class="btn btn-warning" >Editar dados</a>
+                    <form method="post" action="/mensal/deletar" onsubmit="confimarDelecao(event, this)">
+                        <input type="hidden" name="idCliente" value="<%= clientes.id%>" >
+                        <button href="" class="btn btn-danger">Excluir cliente</button>
+                    </form>
+                    <a href="/cadastrarVeiculos/<%= clientes.id%>" class="btn btn-primary">Adicionar veiculos</a>
+                </div>
+            </div>
+                <span></span>
+                <div class="card-body dados"  >
+                    <div class="card-header">
+                        <h4>Dados do motorista</h4>
+                    </div>
+                    <div class="elementos">
+                        <label  for="">Nome:</label>
+                        <span><%= clientes.nome %></span> 
+                    </div>
+                    <div class="elementos">
+                        <label for="">CFP:</label>
+                        <span><%= clientes.cpf %></span> 
+                    </div>
+                    <div class="elementos">
+                        <label for="">Telefone do cliente:</label>
+                        <span><%= clientes.telefone %></span> 
+                    </div>
+                </div>
+                <div class="card-body dados">
+                    <div class="card-header">
+                        <h4>Dados do veiculo</h4>
+                    </div>
+                    <% veiculos.forEach(vei => { %>
+                        <div class="card">
+                            <div class="card-header hearderCadastrar">
+                                <h5 for=""><%= vei.modelo %></h5>
+                                <div class="editarExcluir" >
+                                    <a href="/veiculoEdit/<%= vei.id%>">
+                                        <button class="btn btn-warning">Editar veiculo</button>
+                                    </a>
+                                    <a href="/veiculoDelete/<%= vei.id %>">
+                                        <button class="btn btn-danger">Excluir veiculo</button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="elementos">
+                                    <label>Marca do veiculo:</label> <span for=""><%= vei.marca %></span>
+                                </div>
+                                <div class="elementos">
+                                    <label>Placa: </label> <span for=""><%= vei.placa %></span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    <% }) %>
+                    
+                </div>
+                <div class="card-body dados">
+                    <div class="card-header">
+                        <h4>Dados da vaga</h4>
+                    </div>
+                    <div class="elementos">
+                        <label  for="">Vaga:</label>
+                        <span><%= clientes.vagasPaga %></span>    
+                    </div>
+                    <div class="elementos">
+                        <label for="">Valor de pagamento:</label>
+                        <span><%= clientes.valor %></span>
+                    </div>
+                    <div class="elementos">
+                        <label for="">Dia do pagamento:</label>
+                        <span><%= clientes.pagaDia %></span> 
+                    </div>
+                    <div class="elementos">
+                        <label for="">Status de pagamento: </label>
+                        <span><%= clientes.pagaStatus %></span>
+                    </div>
+                </div>
+                <div class="card-body dados" >
+                    <div class="elementos">
+                        <label for=""></label>
+                        <form method="post" action="/mensal/pagamento/<%= clientes.id %>" onsubmit="alterarPagamento()">
+                            <div class="card-header">
+                                <h4>Dados de pagamento</h4>
+                            </div>
+                            <% if( clientes.pagaStatus == "true") { %>
+                            
+                                <div class="card-header pagamento" >
+                                    <button class="btn btn-primary" id="" name="status"
+                                    value="false" >Alterar para não pago</button>
+                                </div>
+
+                            <% } else { %> 
+
+                                <div class="card-header pagamento" >
+                                    <button class="btn btn-primary" id="" name="status"
+                                    value="true" >Alterar para pago</button>
+                                </div>
+
+                            <% } %>
+                        </form>
+                        <form method="post" action="/mensal/EditVaga/<%= clientes.id %>">
+                            <div class="elementos">
+                                <h4 for="">Alterar numero de vagas</h4>
+                                <select name="vaga" id="">
+                                    <% if(clientes.vagasPaga == 1) { %>
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                    <% } else if( clientes.vagasPaga == 2) { %>
+                                        <option value="1">1</option>
+                                        <option value="2" selected>2</option>
+                                        <option value="3">3</option>
+                                    <% } else { %>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3" selected>3</option>
+                                    <% } %>
+                                    
+                                </select>
+                                <button class="btn btn-primary">Alterar numero de vagas</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>            
+        </div>
+</body>
+
+<script>
+
+
+    function confimarDelecao(event, form){
+    console.log("confimar")
+    event.preventDefault()
+    let desicao = confirm("Deseja deletar esse cliente?")
+    if (desicao) {
+        form.submit()
+    } else {
+        console.log("Cancelado")
+    }
+
+     let onOffSelect = document.querySelector("#onOff")
+        onOffSelect.addEventListener("click", function(){
+            if(onOffSelect.value == 1){
+                document.querySelector("#onOff").innerHTML = "Salvar"
+                document.querySelector("#status").style.display = "inline-block"
+                document.querySelector("#onOff").value = 2
+            }else{
+                document.querySelector("#onOff").innerHTML = "Sim"
+                document.querySelector("#status").style.display = "none"
+                document.querySelector("#onOff").value = 1
+            }                           
+       })  
+}
+</script>
+
+<%- include("../partials/footer.ejs"); %>
+

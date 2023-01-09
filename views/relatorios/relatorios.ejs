@@ -1,0 +1,77 @@
+<% include("../partials/header.ejs"); %>
+
+<body>
+    <%- include("../partials/nav.ejs");  %>
+
+    <div class="container">
+        
+        <div class="card-header">
+            <hr>
+            <h2>
+                Relatorios de pagamento
+            </h2>
+            <hr>
+        </div>  
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <h4>Números de clientes:</h4>
+                <%= dadosRelatorios.clieTotal %>
+                <br>
+                <button class="btn btn-primary"><a class="nav-link active" href="http://localhost:1331/listar">Listar</a></button>
+                <br>
+            </div>
+        </div>
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <h4>Números de clientes com o pagamento em atraso:</h4>
+                <%= dadosRelatorios.pagaAtrad %>
+                <br>
+                <button class="btn btn-primary"><a class="nav-link active" href="http://localhost:1331/relatorio/atrasados">Listar</a></button>
+                <br>
+            </div>
+        </div>
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <span><h4>Números de clientes com o pagamento em dia</h4></span>
+                <%= dadosRelatorios.pagaEmDia %>
+                <br>
+                <button class="btn btn-primary"><a class="nav-link active" href="http://localhost:1331/relatorio/emdia">Listar</a></button>
+                <br>
+            </div>
+        </div>
+
+    </div>
+    
+</body>
+
+<script src="relatorios.ejs"></script>
+
+<style>
+    .dados{
+        background-color: rgb(193, 197, 202);
+        margin-bottom: 15px;
+        border-radius: 11px;
+        padding: 0px 0px 9px 9px;
+    }
+    .elementos{
+        padding-top: 7px;
+    }
+
+    label{
+        padding-right: 5px;
+    }
+    input, select{
+        border-radius: 8px;
+    }
+
+    #hearderCadastrar{
+        padding: 0px 20px 0px 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+<%- include("../partials/footer.ejs"); %>
