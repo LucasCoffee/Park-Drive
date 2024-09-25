@@ -1,33 +1,20 @@
 const express = require("express");
 const router = express.Router();
-
 const bancoVaga = require("../banco/bancoVagas")
 
-let CriarVaga = require("./createVaga");
-let vagaNova = new CriarVaga;
+router.post("/cadastrarVagas", async (req, res) => {
+    const numeroVaga = Number(req.body.nunVaga)
 
-
-router.post("/cadastrarVagas", (req, res) => {
-    let numeroVaga = Number(req.body.nunVaga)
- 
-    bancoVaga.findOne({
-        where:{numero : numeroVaga}
-    }).then(vagaProcurada =>{
-        if (vagaProcurada == null || vagaProcurada == undefined) {
-            bancoVaga.create({
-                numero : numeroVaga,
-                status: true
-            })
-            .then((vaga) => {
-                res.render("./vaga/viewVaga", {vaga : vaga});
-            })
-            .catch((err) => {
-                console.log("erro ao registra vaga")
-            })
-        } else {
-            res.redirect("/listarVagas");
+    try {
+        let vaga = await bancoVaga.findOne({where:{numero: numeroVaga}})
+        if(vaga == null){
+            await bancoVaga.create({numero: numeroVaga, status: true})
         }
-    })
+    } catch (error) {
+
+        exeption
+        res.send("Numero de vaga ja existente")
+    }
 
 });
 
@@ -38,6 +25,7 @@ router.get("/registrarVaga", (req, res) => {
 router.get("/listarVagas", (req, res) => {
 
     bancoVaga.findAll({
+        where: {status: false },
         raw: true, order:[
             ["numero", "ASC"]
         ]

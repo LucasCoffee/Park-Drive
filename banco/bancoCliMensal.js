@@ -1,37 +1,39 @@
 const Sequelize = require("sequelize");
-const conection = require("./conexaoBanco");
+const connection = require("./conexaoBanco");
+const Estacionamento = require("./bancoEstacionamento");
 
-let ClienteMensal = conection.define("mensals", {
-    nome:{
+let ClienteMensal = connection.define("mensal", {
+    nome: {
         type: Sequelize.STRING,
-        allowNUll: false
+        allowNull: false
     }, 
-    cpf:{
+    cpf: {
         type: Sequelize.STRING,
-        allowNUll: false
+        allowNull: false
     }, 
     telefone: {
         type: Sequelize.STRING,
-        allowNUll: false
+        allowNull: false
     }, 
-    vagasPaga:{
-        type: Sequelize.STRING,
-        allowNUll: false
+    vagasPaga: {
+        type: Sequelize.INTEGER, // Changed to INTEGER if it's a count
+        allowNull: false
     },
-    valor:{
-        type: Sequelize.STRING,
-        allowNUll: false
+    valor: {
+        type: Sequelize.FLOAT, // Changed to FLOAT for monetary value
+        allowNull: false
     },
     pagaDia: {
-        type: Sequelize.STRING,
-        allowNUll: false
+        type: Sequelize.BOOLEAN, // Changed to BOOLEAN if it's true/false
+        allowNull: false
     }, 
     pagaStatus: {
         type: Sequelize.STRING,
-        allowNUll: false
+        allowNull: false
     }
 });
 
-ClienteMensal.sync({force: false}).then(() =>{});
+ClienteMensal.sync({force: false}).then({})
 
-module.exports = ClienteMensal
+
+module.exports = ClienteMensal;

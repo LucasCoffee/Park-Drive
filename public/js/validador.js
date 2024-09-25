@@ -33,7 +33,7 @@ class VerificarValoresDublicados{
                     where: {placa: dados.dados.placa}
                 }).then(veiculo => {
                     if(veiculo == undefined){
-                        resolve(dados)
+                        resolve(dados.dados)
                     } else {
                         reject({status: null, vazios: "A placa desse veiculo já foi cadastrada"})
                     }
@@ -45,7 +45,7 @@ class VerificarValoresDublicados{
                     where: {cpf: dados.dados.cpf}
                 }).then(cliente => {
                     if (cliente == undefined) {
-                        resolve(dados)
+                        resolve(dados.dados)
                     } else {
                         reject({status: null, vazios: "Esse CPF ja foi cadastrado"})
                     }
@@ -55,13 +55,6 @@ class VerificarValoresDublicados{
         
     }
 }
-
-
-/* <input class="form-control" type="tel" minlength="8" maxlength="16" id="phone" name="phone"
- placeholder="(11) 9999-9999" onkeypress="mask(this, mphone, $('#country-code').val());"
-  onblur="mask(this, mphone, $('#country-code').val());" required="true"></input>
- */
-
 class RegistrarNoBanco{
 
     criarRegistro(dados){
@@ -107,11 +100,13 @@ class Verificador{
     async analiseDeDados(dadosBrutos){
 
         try {
-            var dadosConferidos = await this.confereValores.Verificar(dadosBrutos)
-            var valoresDuplicados = await this.duplicado.validar(dadosConferidos)
+            var dadosConferidos = await this.confereValores.Verificar(dadosBrutos.dados)
+            var valoresDuplicados = await this.duplicado.validar(dadosBrutos)
             var dadosRegistrados = await this.registrador.criarRegistro(valoresDuplicados)
             return dadosRegistrados
         } catch (error) {
+            console.log(error)
+            
             return error
         }
     }
@@ -119,31 +114,3 @@ class Verificador{
 
 module.exports = new Verificador()
 
-
-// var veiculo = {
-//     categoria: "carro",
-//     modelo: "GT",
-//     marca: "Ford",
-//     placa: "FIB848D9",
-//     mensalId: 2,
-//     vaga: 5
-// }
-
-// const  Validacao = new Verificador()
-
-// async function verificacao(){
-//     let veiculoValidado = Validacao.analiseDeDados({"dadosDe": "veiculo", "dados": veiculo}).then(validado =>{
-//         console.log(validado)
-
-//         if (validado.hasOwnProperty("status")) {
-//             res.send("Voce nao forneceu os seguintes dados: " + validado.vazios)
-//         } else {
-//           console.log(validado)
-//         }
-        
-//     }).catch(err => {
-//         console.log(err)
-//     }) 
-// }
-
-// verificacao()

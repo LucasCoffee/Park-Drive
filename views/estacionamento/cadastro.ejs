@@ -1,0 +1,75 @@
+
+<%- include("../partials/header.ejs"); %>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><h2>ParkDrive</h2></a>
+        </div>
+    </nav>
+</header>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <form method="post" action="/estacionamento/cadastro">
+                <div class="card-header hearderCadastrar">
+                    <h2>Cadastrar de estacionamento</h2>
+                    <button class="btn btn-primary">Cadastrar</button>
+                </div>
+
+                <div class="card-body dados">
+                    <div class="card-header">
+                        <h3>Informações do estacionamento</h3>
+                    </div>
+                    <div class="elementos">
+                        <label for="">CNPJ</label>
+                        <input type="text" name="CNPJ">
+                    </div>
+                    <div class="elementos">
+                        <label for="">Nome do seu estacionamento</label>
+                        <input type="text" name="nome">
+                    </div>
+                    <div class="elementos">
+                        <label for="">email</label>
+                        <input type="email" name="email">
+                    </div>
+                    <div class="elementos">
+                        <label for="">senha</label>
+                        <input type="password" name="senha">
+                    </div>
+                    <div class="elementos">
+                        <label for="">confime a senha</label>
+                        <input type="password" name="modelo">
+                    </div>
+
+                </div>
+
+                <div class="card-header">
+                    <h2>Vaga do estacionamento</h2>
+                </div>
+                <div class="card-body dados">
+
+                    <div class="elementos">
+                        <label for="">Numero de vagas para clientes horistas</label>
+                        <input type="number" name="numVagasDia">
+                    </div>
+                    <div class="elementos">
+                        <label for="">Numero de vagas para clientes mensalistas</label>
+                        <input type="number" name="numVagasMen">
+                    </div>
+                    <div class="elementos">
+                        <label for="">Valor pago pelo clientes por hora</label>
+                        <input type="number" name="valorDiario">
+                    </div>
+                    <div class="elementos">
+                        <label for="">Valor pago pelo clientes por mês</label>
+                        <input type="number" name="valorMensal">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
+
+<%- include("../partials/footer.ejs"); %>

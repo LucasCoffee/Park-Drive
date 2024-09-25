@@ -1,8 +1,8 @@
 const Sequelize = require("sequelize");
 const conection = require("./conexaoBanco");
-const Veiculo = require("./../veiculos/veiculos")
+const Estacionamento = require("./bancoEstacionamento")
 
-let parkingspace = conection.define("parkingspace", {
+let vaga = conection.define("vaga", {
    numero:{
     type: Sequelize.INTEGER,
     allowNull: true
@@ -14,13 +14,7 @@ let parkingspace = conection.define("parkingspace", {
 
 });
 
-
-
-parkingspace.sync({force: false}).then({})
-
-
-
-module.exports = parkingspace
+module.exports = vaga
 
 
 

@@ -1,11 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const LocalStorage = require("node-localstorage").LocalStorage;
-localStorage = new LocalStorage('./scratch');
-const Vagas = require("./../banco/bancoVagas.js");
-const registrarSheets = require("./regisSheets");
-
-module.exports = router
 
 router.get("/estacionar", (req, res) => {
 
@@ -75,17 +69,11 @@ router.post("/salvarEntrada", (req, res) => {
 });
 
 router.get("/listarDiario", (req, res) => {
-    var arrCliente = []
-    for( let i = 0; i < localStorage.length; i++){
-        var vei = JSON.parse(localStorage.getItem(localStorage.key(i)))
-        arrCliente.push(vei)
-    };
     res.render("./diario/listarDiarios", {titulo: "Carros estacionados", clientes: arrCliente});
 });
 
 router.get("/diario/:placa", (req, res) => {
     var placa = req.params.placa
-    var veiculo = JSON.parse(localStorage.getItem(placa))
     registrarSaida(veiculo);
 
     if (veiculo != undefined) {
@@ -174,3 +162,5 @@ function registrarSaida(veiculo) {
     return veiculo
 
 }
+
+module.exports = router

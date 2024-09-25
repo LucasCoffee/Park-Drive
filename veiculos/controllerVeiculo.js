@@ -3,9 +3,7 @@ const router = express.Router();
 const conection = require("../banco/conexaoBanco");
 const BancoCliMensal = require("../banco/bancoCliMensal");
 const bancoVeiculos = require("../veiculos/veiculos");
-const id = require("faker/lib/locales/id_ID");
-const flash = require("express-flash");
-
+    
 const bancoVaga = require("../banco/bancoVagas");
 const Veiculos = require("../veiculos/veiculos");
 
@@ -51,8 +49,10 @@ router.post("/registrarVeiculo", (req, res) => {
         placa: req.body.placa,
         mensalId: req.body.motoristaID,
         vaga: req.body.vaga
+
     }
 
+ 
     const Validacao = require("../public/js/validador")
 
     async function verificacao(){

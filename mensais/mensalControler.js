@@ -1,16 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const conection = require("../banco/conexaoBanco");
 const bancoClienteMensal = require("../banco/bancoCliMensal");
 const bancoVeiculos = require("../veiculos/veiculos");
+const Validacao = require("../public/js/validador");
+
 
 router.get("/cadastro", function(req, res){
 
     res.render("./mensal/cadaMensal.ejs")
 
 });
-
-const Validacao = require("../public/js/validador");
 
 router.post("/cadastrar", (req, res) =>{
 
@@ -25,11 +24,8 @@ router.post("/cadastrar", (req, res) =>{
         pagaDia: req.body.diaPaga,
         pagaStatus: req.body.pagamento
     }
-
-    function main() { 
         
-        var dadosValidados = Validacao.analiseDeDados({"dadosDe": "mensal", "dados" : dadosClientes}).then(cadastrado => {
-            console.log(cadastrado)
+        Validacao.analiseDeDados({"dadosDe": "mensal", "dados" : dadosClientes}).then(cadastrado => {
             if (cadastrado.hasOwnProperty("status")) {
                 res.send("Voce nao forneceu os seguintes dados: " + cadastrado.vazios)
             } else {
@@ -38,12 +34,7 @@ router.post("/cadastrar", (req, res) =>{
         }).catch(err => {
             console.log(err)
         });
-
-    }
-
-    main()
-
-});
+});           
 
 router.get("/listar", function(req, res){
 

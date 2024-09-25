@@ -17,7 +17,11 @@ var ClienteDiario = conection.define("diarios", {
     valorPago: {
         freezeTableName: true,
         type: DataTypes.NUMBER
-    }
+    }, 
+    
 }); 
+
+ClienteDiario.sync({force: false}).then(() =>{});
+
 
 module.exports = ClienteDiario
