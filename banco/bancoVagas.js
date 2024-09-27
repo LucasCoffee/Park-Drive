@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const conection = require("./conexaoBanco");
-const Estacionamento = require("./bancoEstacionamento")
+const ClienteMensal = require("./bancoCliMensal");
+
 
 let vaga = conection.define("vaga", {
    numero:{
@@ -13,6 +14,9 @@ let vaga = conection.define("vaga", {
    }
 
 });
+
+ClienteMensal.hasMany(vaga);
+vaga.belongsTo(ClienteMensal);
 
 module.exports = vaga
 

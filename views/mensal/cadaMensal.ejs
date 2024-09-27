@@ -6,7 +6,7 @@
   
     <div class="container">
         <div class="card">
-            <form method="post" action="/cadastrar">
+            <form method="post" action="/mensal/cadastrar">
                 <div class="card-header hearderCadastrar" >
                     <h2>Cadastrar cliente mensal</h2>
                     <button class="btn btn-primary">Cadastrar</button>
@@ -37,35 +37,15 @@
                     <div class="card-header">
                         <h4>Pagamento</h4>
                     </div>
-                    <div class="elementos">
-                        <label for="">Numero de vagas</label>
-                         <select name="vagasPaga" onclick="calcularValor(document.querySelector('#vagasPaga'))" >
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                    </div>
-                    <div class="elementos">
-                        <label for="valor">Valor de pagamento</label>
-                            <% %>
-                        <input type="number" readonly name="valor" value="200">
-                    </div>
-                    <div class="elementos">
+                    
                         <label for="">Dia de pagamento</label>
-                        <select name="diaPaga">
+                        <select name="pagaDia">
                             <option value="1">1</option>
                             <option value="10">10</option>
                             <option value="20">20</option>
                         </select>
                     </div>
-                    <div class="elementos">
-                        <label for="">Status de pagamento</label>
-                        <select name="pagamento">
-                            <option value="0"></option>
-                            <option value="true">Pago</option>
-                            <option value="false">A pagar</option>
-                        </select>
-                    </div>
+                    
                 </div>
             </form>
         </div>

@@ -1,57 +1,72 @@
 const express = require("express");
 const router = express.Router();
-const bancoClienteMensal = require("../banco/bancoCliMensal");
-const bancoVeiculos = require("../veiculos/veiculos");
-const Validacao = require("../public/js/validador");
-
+const ServiceMensal = require("./ServiceMensal")
 
 router.get("/cadastro", function(req, res){
+    console.log(idEsta)
 
     res.render("./mensal/cadaMensal.ejs")
-
 });
 
-router.post("/cadastrar", (req, res) =>{
+router.post("/cadastrar", async (req, res) =>{
 
-    var dadosClientes = {
-        nome : req.body.nome,
-        cpf : req.body.cpf,
-        telefone :  req.body.telefone,
-        pagaDia : req.body.diaPaga,
-        pagaStatus : req.body.pagamento,
-        vagasPaga: req.body.vagasPaga,
-        valor: ((req.body.vagasPaga) * 200 ),
-        pagaDia: req.body.diaPaga,
-        pagaStatus: req.body.pagamento
+    const { idEsta, email } = req.usuario;
+    const { nome, cpf, telefone, pagaDia} = req.body; 
+
+    try {
+        const criar = new ServiceMensal(null, idEsta, nome, cpf, telefone, pagaDia, email )
+        const response = await criar.cadastrar()
+        res.json(response)
+    } catch (error) {
+        res.json({mensagem: "Erro no cadastro"})
+
     }
-        
-        Validacao.analiseDeDados({"dadosDe": "mensal", "dados" : dadosClientes}).then(cadastrado => {
-            if (cadastrado.hasOwnProperty("status")) {
-                res.send("Voce nao forneceu os seguintes dados: " + cadastrado.vazios)
-            } else {
-                res.redirect("/listar/" + cadastrado.id)
-            }
-        }).catch(err => {
-            console.log(err)
-        });
+
 });           
 
-router.get("/listar", function(req, res){
+router.get("/listar", async function(req, res){
+    const { idEsta } = req.usuario;
 
-    bancoClienteMensal.findAll({
-        raw: true, order:[
-            ["id", "DESC"]
-        ]
-    }).then(clientes =>{
+    try {
+        const serviceMensal = new ServiceMensal(null, idEsta)
+        const clientes = await serviceMensal.buscarTodos()
         res.render("./mensal/listarMensal", {
             titulo : "Lista de clientes mensais",
             clientes : clientes
         })
-    });
+    } catch (error) {
+        res.render("./mensal/listarMensal", {
+            titulo : "Erro na busca tente novamente",
+            clientes : []
+        })
+    }
 
 });
 
-router.post("/mensal/deletar", (req, res) => {
+router.get("/visualizarCliente/:id", async function(req, res){
+    const { id } = req.params;
+    const { idEsta } = req.usuario;
+
+    try {
+        const serviceMensal = new ServiceMensal(id, idEsta)
+        const mensal = await serviceMensal.buscarUnico();
+        res.render("./mensal/viewClienteMensal", {
+            clientes : mensal[0]?.dataValues,
+            veiculos: mensal[0]?.dataValues.veiculos || []
+        })
+    } catch (error) {
+        res.render("./mensal/listarMensal", {
+            titulo : "Erro na busca tente novamente",
+            clientes : []
+        })
+    }
+
+});
+
+
+
+
+router.post("/deletar", (req, res) => {
     let idCliente = req.body.idCliente
 
     if(idCliente != undefined){
@@ -71,7 +86,7 @@ router.post("/mensal/deletar", (req, res) => {
     }
 })
 
-router.get(("/mensal/editar/:id"), (req, res) => {
+router.get(("/editar/:id"), (req, res) => {
     let idCliente = req.params.id
     console.log(idCliente)
     if(isNaN(idCliente)){
@@ -90,7 +105,7 @@ router.get(("/mensal/editar/:id"), (req, res) => {
 
 });
 
-router.post(("/mensal/salvarEdicao"), (req, res) =>{
+router.post(("/salvarEdicao"), (req, res) =>{
 
     let idCliente = req.body.id
 
@@ -121,7 +136,7 @@ router.post(("/mensal/salvarEdicao"), (req, res) =>{
 });
 
 
-router.post("/mensal/pagamento/:id", (req, res) => {
+router.post("/pagamento/:id", (req, res) => {
     let idCliente = req.params.id
     let status = req.body.status
     bancoClienteMensal.findByPk(idCliente).then(clientes => {
@@ -137,7 +152,7 @@ router.post("/mensal/pagamento/:id", (req, res) => {
     })
 });
 
-router.post("/mensal/EditVaga/:id", (req, res) => {
+router.post("/EditVaga/:id", (req, res) => {
     let idCliente = req.params.id
     let vaga = req.body.vaga
 

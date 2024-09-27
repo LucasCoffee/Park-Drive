@@ -15,20 +15,12 @@ let ClienteMensal = connection.define("mensal", {
         type: Sequelize.STRING,
         allowNull: false
     }, 
-    vagasPaga: {
-        type: Sequelize.INTEGER, // Changed to INTEGER if it's a count
-        allowNull: false
-    },
-    valor: {
-        type: Sequelize.FLOAT, // Changed to FLOAT for monetary value
-        allowNull: false
-    },
     pagaDia: {
-        type: Sequelize.BOOLEAN, // Changed to BOOLEAN if it's true/false
+        type: Sequelize.INTEGER, // Changed to BOOLEAN if it's true/false
         allowNull: false
-    }, 
-    pagaStatus: {
-        type: Sequelize.STRING,
+    },
+    id_estacionamento: {
+        type: Sequelize.INTEGER, // Changed to BOOLEAN if it's true/false
         allowNull: false
     }
 });

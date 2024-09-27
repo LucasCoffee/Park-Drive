@@ -1,6 +1,10 @@
 // express
 const express = require("express");
 const app = express();
+const jwt = require("jsonwebtoken")
+
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 //view engine
 app.set("view engine", "ejs");
@@ -14,16 +18,31 @@ app.use(bodyParser.json());
 app.set(express.static("public"));
 app.use(express.static(__dirname + '/public'));
 
+async function verificarToken(req, res, next) {
+    const tokenRecuperado = req.cookies.token; // Recuperando o token do cookie
+
+    try {
+        jwt.verify(tokenRecuperado, process.env.SECRET, (err, decoded) => {
+            if (err) {
+                res.redirect("/estacionamento/login")
+            }
+            req.usuario = decoded;
+            next();
+          });
+    } catch (error) {
+        res.redirect("/estacionamento/login")
+    }
+  }
+
 //controler
 const controlerMensal = require("./mensais/mensalControler")
-app.use("/mensal", controlerMensal);
+app.use("/mensal",verificarToken, controlerMensal);
 
 const controlerVeiulos = require("./veiculos/controllerVeiculo");
-app.use("/veiculos", controlerVeiulos);
+app.use("/veiculos",verificarToken, controlerVeiulos);
 
 const controllerDiario = require("./diario/ControllerCliDiarios");
-app.use("/diario", controllerDiario);
-
+app.use("/diario",verificarToken, controllerDiario);
 
 const controllerEstacionamento = require("./Estacionamento/ControllerEstacionamento");
 app.use("/estacionamento", controllerEstacionamento);

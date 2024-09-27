@@ -1,0 +1,44 @@
+<%- include("../partials/header.ejs"); %>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><h2>ParkDrive</h2></a>
+        </div>
+    </nav>
+</header>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .login-container {
+        max-width: 400px;
+        margin: auto;
+        padding: 30px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<body>
+    <div class="login-container">
+        <h2 class="text-center">Login</h2>
+        <form method="post" action="/estacionamento/login">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Senha</label>
+                <input type="password" class="form-control" name="senha" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Entrar</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="#">Esqueceu a senha?</a>
+        </div>
+    </div>
+</body>
+
+<%- include("../partials/footer.ejs"); %>

@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 const conection = require("../banco/conexaoBanco");
 const BancoCliMensal = require("../banco/bancoCliMensal");
-const bancoVeiculos = require("../veiculos/veiculos");
+const bancoVeiculos = require("../banco/veiculos");
     
 const bancoVaga = require("../banco/bancoVagas");
-const Veiculos = require("../veiculos/veiculos");
 
 router.get("/cadastrarVeiculos/:id", (req, res) => {
 
