@@ -29,6 +29,10 @@ const Veiculos = conection.define("veiculos", {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    vagaId:{
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     createdAt: {
         type: DataTypes.DATE, // Use DATE for timestamps
         allowNull: false

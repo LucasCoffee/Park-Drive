@@ -1,75 +1,43 @@
 <%- include("../partials/header.ejs"); %>
 
 <body>
+    <div class="container mt-5">
+        <h1 class="text-center">Cadastro de Vaga e Veículo</h1>
+        
+        <form action="/veiculos/registrarVeiculo/<%= id%>" method="POST">
+            <div class="form-group">
+                <label for="vagaSelect">Selecione a Vaga:</label>
+                <select class="form-control" id="vagaSelect" name="vaga">
+                    <% vagas.forEach(function(vaga) { %>
+                        <option value="<%= vaga %>"><%= vaga %></option>
+                    <% }); %>
+                </select>
+            </div>
 
-    <%- include("../partials/nav.ejs");  %>
-    
-    <div class="container">
-        <div class="card">
-            <form method="post" action="/veiculos/registrarVeiculo">
-                <div class="card-header hearderCadastrar">
-                    <h2>Cadastrar veiculos</h2>
-                    <button class="btn btn-primary">Cadastrar</button>
-                </div>
-                <div class="card-body dados">
-                    <div class="card-header">
-                        <h3>Dados do veiculo</h3>
-                    </div>
-                    <div class="elementos">
-                        <label for="">Categoria</label>
-                        <select name="categoria" id="">
-                            <option value=""></option>
-                            <option value="1">Carro</option>
-                            <option value="2">Moto</option>
-                        </select>
-                    </div>
-                    <div class="elementos">
-                        <label for="">Modelo</label>
-                        <input type="text" name="modelo">
-                    </div>
-                    <div class="elementos">
-                        <label for="">Marca</label>
-                        <input type="text" name="marca">
-                    </div>
-                    <div class="elementos">
-                        <label for="">Placa</label>
-                        <input type="text" name="placa">
-                    </div>
-                </div>
-                <div class="card-header">
-                    <h2>Vaga</h2>
-                </div>
-                <div class="card-body dados">
-                    <div class="elementos">
-                        <label for="">Vaga</label>
-                        <select name="vaga" id="">
-                            <% vaga.forEach(vaga => { %>
-                                <option value="<%= vaga.numero %>"><%= vaga.numero %></option> 
-                            <% }) %>
-                        </select>
-                    </div>
-                </div>
+            <h4>Informações do Veículo</h4>
+            <div class="form-group">
+                <label for="categoriaSelect">Categoria:</label>
+                <select class="form-control" id="categoriaSelect" name="categoria">
+                    <option value="carro">Carro</option>
+                    <option value="moto">Moto</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="modeloInput">Modelo:</label>
+                <input type="text" class="form-control" id="modeloInput" name="modelo" placeholder="Informe o modelo">
+            </div>
+            <div class="form-group">
+                <label for="marcaInput">Marca:</label>
+                <input type="text" class="form-control" id="marcaInput" name="marca" placeholder="Informe a marca">
+            </div>
+            <div class="form-group">
+                <label for="placaInput">Placa:</label>
+                <input type="text" class="form-control" id="placaInput" name="placa" placeholder="Informe a placa">
+            </div>
 
-                <div class="card-header">
-                    <h2>Dados do motorista</h2>
-                </div>
-                <div class="card-body dados">
-                    <div class="elementos">
-                        <label for="">Selecione o motorista</label>
-                        <select name="motoristaID" id="">
-                            <% motoristas.forEach((motorista) => { %> 
-                                <% if (motorista.id == id) { %>
-                                <option value="<%= motorista.id %>" selected><%= motorista.nome %></option>
-
-                                <% }%>
-                            <% }) %> 
-                        </select>
-                    </div>
-                </div>
-            </form>
-        </div>
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
     </div>
-    
 
 </body>
 </html>

@@ -3,8 +3,6 @@ const router = express.Router();
 const ServiceMensal = require("./ServiceMensal")
 
 router.get("/cadastro", function(req, res){
-    console.log(idEsta)
-
     res.render("./mensal/cadaMensal.ejs")
 });
 
@@ -15,8 +13,8 @@ router.post("/cadastrar", async (req, res) =>{
 
     try {
         const criar = new ServiceMensal(null, idEsta, nome, cpf, telefone, pagaDia, email )
-        const response = await criar.cadastrar()
-        res.json(response)
+        const id = await criar.cadastrar()
+        res.redirect(`/mensal/visualizarCliente/${id}`)
     } catch (error) {
         res.json({mensagem: "Erro no cadastro"})
 
@@ -24,8 +22,13 @@ router.post("/cadastrar", async (req, res) =>{
 
 });           
 
-router.get("/listar", async function(req, res){
+router.get("/listar", async (req, res) => {
+
+    if(req.usuario == undefined){
+        res.redirect("/")
+    }
     const { idEsta } = req.usuario;
+
 
     try {
         const serviceMensal = new ServiceMensal(null, idEsta)
@@ -52,7 +55,9 @@ router.get("/visualizarCliente/:id", async function(req, res){
         const mensal = await serviceMensal.buscarUnico();
         res.render("./mensal/viewClienteMensal", {
             clientes : mensal[0]?.dataValues,
-            veiculos: mensal[0]?.dataValues.veiculos || []
+            veiculos: mensal[0]?.dataValues.veiculos || [],
+            vagas: mensal[0]?.dataValues.vagas || []
+
         })
     } catch (error) {
         res.render("./mensal/listarMensal", {

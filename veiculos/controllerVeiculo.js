@@ -1,87 +1,58 @@
 const express = require("express");
 const router = express.Router();
-const conection = require("../banco/conexaoBanco");
-const BancoCliMensal = require("../banco/bancoCliMensal");
-const bancoVeiculos = require("../banco/veiculos");
-    
-const bancoVaga = require("../banco/bancoVagas");
+const ServiceEstacionamento = require("../Estacionamento/ServiceEstacionamento");    
+const ServiceVaga = require("../Vaga/vagaService");
+const ServiceVeiculo = require("./serviceVeiculos")
 
-router.get("/cadastrarVeiculos/:id", (req, res) => {
+router.get("/cadastrarVeiculos/:id", async (req, res) => {
+    const {idEsta} = req.usuario;
+    const {id} = req.params
+    const Service = new ServiceEstacionamento(idEsta)
 
-    let idMoto = req.params.id
+    try {
+        const [response] = await Service.buscaVagas(idEsta);
+        const vagasJaCriada = [];
+        const vagas = [];
+        response.dataValues?.vagas.forEach(numero => {
+            vagasJaCriada.push(numero.dataValues.numero)
+        })
 
-    BancoCliMensal.findAll({
-        where: {id: idMoto},
-        include: [
-            {
-                model : bancoVeiculos, 
-                where: {mensalId: idMoto}, 
-                required : false
-            }
-        ]   
-    }).then(motorista => {
-        var obj;
-        motorista.forEach(element => {
-            obj = element
-            for (const key in element) {                
-                if (key == "veiculos" ) {
-                    if (element[key].length >= Number(obj.vagasPaga)) {
-                        res.send("Voce atingiu o limite de vagas disponivei!")
-                    } else {
-                        bancoVaga.findAll(
-                            {where: {status: true}
-                        }).then(vaga =>{
-                            res.render("veiculos/cadaVei", {motoristas : motorista, id: idMoto, vaga : vaga})
-                        });
-                    };
-                };
-            };
-        });
-    });
+        for(let i = 1; i < response.dataValues.numVagasMen; i++){
+                if(!vagasJaCriada.includes(i)){
+                    vagas.push(i)
+                }
+        }
+            
+        res.render("veiculos/cadaVei", {motoristas : [], id: id, vagas : vagas || []})
+
+    } catch (error) {
+        console.log(error)
+        res.send("Erro de busca nas informações")
+    }
+
 });
 
-router.post("/registrarVeiculo", (req, res) => {
-    var veiculo = {
-        categoria: req.body.categoria,
-        modelo: req.body.modelo,
-        marca: req.body.marca,
-        placa: req.body.placa,
-        mensalId: req.body.motoristaID,
-        vaga: req.body.vaga
+router.post("/registrarVeiculo/:idMensal", async (req, res) => {
+    const {idEsta} = req.usuario
+    const {idMensal} = req.params
+    const {vaga, placa, modelo, marca, categoria} = req.body;
+   
+    try {
+        const vagaService = new ServiceVaga(Number(idEsta), Number(vaga), Number(idMensal))
+        const {id} = await vagaService.create();
+        console.log(id)
 
+        const serviceVeiculo = new ServiceVeiculo(Number(idMensal), Number(id), placa, modelo, marca, categoria )
+        await serviceVeiculo.cadastrar();
+        res.redirect("/mensal/listar")
+    } catch (error) {
+        console.log(error)
+        res.send("Erro de cadastro")
     }
 
- 
-    const Validacao = require("../public/js/validador")
 
-    async function verificacao(){
-        let veiculoValidado = Validacao.analiseDeDados({"dadosDe": "veiculo", "dados": veiculo}).then(validado =>{
-            console.log(validado)
 
-            if (validado.hasOwnProperty("status")) {
-                res.send("Voce nao forneceu os seguintes dados: " + validado.vazios)
-            } else {
-                new Promise((resolve, reject) => {
-                    bancoVaga.findOne({
-                        where: {
-                            numero: req.body.vaga
-                        }
-                    }).then(vaga => {
-                        vaga.update({
-                            status: false
-                        })
-                    })
-                })
-                res.redirect("/listar/" + validado.mensalId)
-            }
-            
-        }).catch(err => {
-            console.log(err)
-        }) 
-    }
-
-    verificacao()
-
+    
 });
 
 

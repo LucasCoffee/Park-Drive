@@ -69,7 +69,7 @@ router.post("/salvarEntrada", (req, res) => {
 });
 
 router.get("/listarDiario", (req, res) => {
-    res.render("./diario/listarDiarios", {titulo: "Carros estacionados", clientes: arrCliente});
+    res.render("./diario/listarDiarios", {titulo: "Carros estacionados", clientes:  []});
 });
 
 router.get("/diario/:placa", (req, res) => {

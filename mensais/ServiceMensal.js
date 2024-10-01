@@ -14,23 +14,19 @@ class ServiceMensal{
     }
     async cadastrar(){
 
-        const coerente = await bcrypt.compare(this.idEsta, senha);
-
-
-        await bancoClienteMensal.create({
-            nome: this.nome, 
-            cpf: this.cpf, 
-            telefone: this.telefone,
-            pagaDia: this.pagaDia, 
-            id_estacionamento: this.idEsta})
-        .then((clientes) => {
-            console.log('Cliente cadastrado com sucesso');
-            Promise.resolve(clientes)
-
-            }).catch((err) => {
-                console.log(err)
-                Promise.reject(null)
-        });
+        try {
+            const cliente = await bancoClienteMensal.create({
+                nome: this.nome, 
+                cpf: this.cpf, 
+                telefone: this.telefone,
+                pagaDia: this.pagaDia, 
+                id_estacionamento: this.idEsta})
+                return Promise.resolve(cliente.id)
+                
+        } catch (error) {
+            console.log(err)
+            return Promise.reject(null)
+        }
     }
 
     async buscarTodos(){

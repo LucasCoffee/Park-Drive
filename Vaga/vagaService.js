@@ -1,9 +1,35 @@
+const { where } = require("sequelize");
 const bancoVaga = require("../banco/bancoVagas");
-const ServiceEstac = require("../Estacionamento/ServiceEstacionamento")
+const ServiceEstac = require("../Estacionamento/ServiceEstacionamento");
+const modelEstacionamento = require("../banco/bancoEstacionamento");
 
-class Vaga {
-    constructor(idEsta, numero){
+class ServiceVaga {
+    constructor(idEsta, numero, idMensal, status){
         this.idEsta = idEsta;
+        this.numero = numero
+        this.idMensal = idMensal,
+        this.status = status
+    }
+
+    async VerificaNumeroUtilizado(){
+        try {
+            const res = await bancoVaga.findAndCountAll({
+                attributes: ["numero"],
+                where: { estacionamentoId: this.idEsta },
+                include: [
+                    {
+                        model: modelEstacionamento,
+                        attributes: ["numVagasDia", "numVagasMen"],
+                        required: true, // Garante que o estacionamento deve existir
+                        where: { id: this.idEsta }
+                    }
+                ]
+            });
+            
+            return Promise.resolve(res)
+        } catch (error) {
+            return Promise.reject()
+        }
     }
 
     async ConfereNumerosTotalDeVagas(){
@@ -41,20 +67,21 @@ class Vaga {
         }
     }
 
-    create(){
-        bancoVaga.create({
-            numero : numeroVaga,
-            status: "Disponivel"
-        })
-        .then((vaga) => {
-            console.log("vaga registrada com sucesso");
-             return vaga
-        })
-        .catch((err) => {
-            console.log("erro ao registra vaga")
-        })
+    async create(){
+        try {
+            const response = await bancoVaga.create({
+                numero : this.numero,
+                status: false,
+                estacionamentoId: this.idEsta,
+                mensalId: this.idMensal
+    
+            })
+            return Promise.resolve(response)
+        } catch (error) {
+            return Promise.reject(error)
+        }
     }
 
 };
 
-module.exports = Vaga
+module.exports = ServiceVaga

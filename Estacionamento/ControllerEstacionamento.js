@@ -14,7 +14,7 @@ router.post("/cadastro/", async (req, res) =>{
     try {
         const cadastroEsta = new ServiceEstacionamento(CNPJ, email, senha, nome, numVagasDia, numVagasMen, valorDiario, valorMensal)
             await cadastroEsta.Cadastro()
-            res.send("Criado")
+            res.redirect("/")
     } catch (error) {
             res.json({erro: error})
     }
@@ -41,14 +41,17 @@ router.post("/login/", async (req, res) =>{
         res.send("Erro ao fazer login")
     }})
 
-//update
-
-//getInfos
+router.get("/logout/", (req, res) => {
+    res.cookie('token', undefined, { secure: true, httpOnly: true })
+    res.redirect("/")
+})
 router.get("/cadastro/:id", async (req, res) =>{
     const idEsta = req.params.id;
     try {
         const estaInfos = await new ServiceEstacionamento(idEsta).buscarID();
-        res.render()
+        res.render(
+            
+        )
     } catch (error) {
         console.log(error)
         res.send("Erro na busca pelo estacionamento")

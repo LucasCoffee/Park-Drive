@@ -1,23 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const bancoVaga = require("../banco/bancoVagas")
-
-router.post("/cadastrarVagas", async (req, res) => {
-    const numeroVaga = Number(req.body.nunVaga)
-
-    try {
-        let vaga = await bancoVaga.findOne({where:{numero: numeroVaga}})
-        if(vaga == null){
-            await bancoVaga.create({numero: numeroVaga, status: true})
-        }
-    } catch (error) {
-
-        exeption
-        res.send("Numero de vaga ja existente")
-    }
-
-});
-
 router.get("/registrarVaga", (req, res) => {
     res.render("./vaga/cadaVagas")
 })

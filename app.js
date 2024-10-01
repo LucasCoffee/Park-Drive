@@ -56,5 +56,11 @@ app.listen(1331, (erro) =>{
 });
 
 app.get("/", function(req, res){
-    res.render("home.ejs")
+    console.log(req.cookies)
+    if(req.cookies.token == undefined || req.cookies.token == "undefined"){
+        res.render("PaginaInicial.ejs")
+    }else{
+        res.render("home.ejs")
+    }
+
 });
