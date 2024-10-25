@@ -6,7 +6,7 @@
 
     <div class="container" >
         <div class="card">
-            <form method="post" action="/salvarEntrada">
+            <form method="post" action="/diario/salvarEntrada">
                 <div class="card-hearder" id="hearderCadastrar">
                     <h2>Resgistrar entrada de veiculo</h2>
                     <button class="btn btn-primary">Registrar</button>
@@ -32,24 +32,16 @@
                 </div>
                 <div class="card-body dados">
                     <div class="card-header">
-                        <h4>Entrada</h4>
+                        <h4>Vaga</h4>
                         
                     </div>
                     <div class="elementos">
                         <label for="">Vaga:</label>
                         <select name="vaga">
-                            <% vagas.forEach(vaga => { %>
-                                <option value="<%= vaga.id %>"><%= vaga.numero %></option>
-                            <% }) %>
+                            <% for(let x = 1; x <= vaga; x++) { %>
+                                <option value="<%= vaga %>"><%= x %></option>
+                            <% } %>
                         </select>
-                    </div>
-                    <div class="elementos">
-                        <label for="">Horario de entrada:</label>
-                        <label for="" id="horaEntrada" name="horaEntrada"><%= horarios.horEntrada %>:<%= horarios.minEntrada %></label>
-                    </div>
-                    <div class="elementos">
-                        <label for="">Data de entrada:</label>
-                        <label id="dataEntrada" name="dataEntrada"><%= horarios.dataEntrada %></label>
                     </div>
                 </div>
             </form>

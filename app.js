@@ -6,6 +6,18 @@ const jwt = require("jsonwebtoken")
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
+const mongoose = require("mongoose");
+mongoose.set('strictQuery', false)
+mongoose.connect("mongodb://localhost:27017/estacionamento", {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => {
+        console.log("Mongo OK")
+    })
+    .catch((err) => {
+        console.log("Mongo Bad")
+
+        console.log(err)
+    })
+
 //view engine
 app.set("view engine", "ejs");
 

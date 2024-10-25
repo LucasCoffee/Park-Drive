@@ -1,86 +1,66 @@
 const express = require("express");
 const router = express.Router();
+const ServiceEstacionamento = require("../Estacionamento/ServiceEstacionamento")
+const ServiceCliDiario = require("./ServiceDiarios")
 
-router.get("/estacionar", (req, res) => {
+router.get("/estacionar", async (req, res) => {
+    try {
+        const {idEsta} = req.usuario;
+        const service = new ServiceEstacionamento()
+        const [response] = await service.buscaVagas(idEsta);
 
-    var horarios = {
-        horEntrada: 0, 
-        horSaida: 0,
-        minEntrada: 0,
-        minSaida: 0,
-        dataEntrada: 0
+        res.render("diario/cadaDiarios", {vaga: response.dataValues.numVagasDia})
+
+    } catch (error) {
+        res.send("Erro no server")
     }
 
-        horarios.horEntrada = new Date().getHours() 
-        horarios.minEntrada = new Date().getMinutes()
-        var date = new Date()
-        horarios.dataEntrada = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()
-        if (horarios.minEntrada < 9) {
-            horarios.minEntrada = "0" + horarios.minEntrada
-        };
+});
+
+router.post("/salvarEntrada", async (req, res) => {
+    try {
+        const {idEsta} = req.usuario;
+        const {placa, vaga} = req.body
+        const dataSys = new Date()
+        const horaMin = new Date( dataSys.getHours() + ":" + dataSys.getMinutes())
+        const criarNovo  = new ServiceCliDiario(idEsta, placa, vaga, horaMin, null, null);
+        await criarNovo.cadastrar()
+            res.redirect("/diario/listarDiario")
+    } catch (error) {
         
-    Vagas.findAll({
-        where: {
-            status: true
-        }, 
-        order: [
-            ['numero', "ASC"]
-        ]
-    }).then( vaga => {
-        res.render("./diario/cadaDiarios", {horarios : horarios, vagas : vaga})
-    }).catch(err => {
-        res.send("Erro de servidor")
-    });
-});
-
-router.post("/salvarEntrada", (req, res) => {
-    var entradaVei = {
-        vaga: req.body.vaga,
-        placa: req.body.placa,
-        horEntrada: new Date().getHours(),
-        horSaida: 0,
-        minEntrada: new Date().getMinutes(),
-        minSaida: 0,
-        dataEntrada: new Date().getDate() + "/" + new Date().getMonth() + "/" + new Date().getFullYear(),
-        dataSaida: 0,
-        horParado: 0,
-        minParado: 0, 
-        totParado: 0,
-        valorApagar: 0
     }
 
-    if (entradaVei.placa != undefined || entradaVei.placa != "") {
+});
 
-        Vagas.findByPk(entradaVei.vaga).then(vaga => {
-            vaga.update(
-                {status: false}
-            );
-        }).then(vagaUp => {
-            console.log("Vaga atualizada")
-        }).catch(err => {
-            console.log("err", err )
-        })
-
-        localStorage.setItem(entradaVei.placa, JSON.stringify(entradaVei) );
-        res.redirect("/listarDiario")
-    } else {
-        res.send("FIm")
+router.get("/listarDiario", async (req, res) => {
+    
+    try {
+        const clientesDiarios = new ServiceCliDiario()
+        const response = await clientesDiarios.buscarTodos();
+            res.render("./diario/listarDiarios", {titulo: "Listar clientes diarios", clientes: response})
+    } catch (error) {
+        console.log(error)
+        res.send("Erro na busca das vagas")
     }
+    
 });
 
-router.get("/listarDiario", (req, res) => {
-    res.render("./diario/listarDiarios", {titulo: "Carros estacionados", clientes:  []});
-});
+router.get("/:placa", async (req, res) => {
+    
+    try {
+        const placa = req.params.placa
+        const dadosVeiculo = new ServiceCliDiario(null, placa)
+        if(placa != undefined){
+            const response = await dadosVeiculo.buscarUnico();
+            res.json(response)
+        }else{
+            res.send("Erro ao buscar placa")
 
-router.get("/diario/:placa", (req, res) => {
-    var placa = req.params.placa
-    registrarSaida(veiculo);
+        }
 
-    if (veiculo != undefined) {
-        res.render("./diario/saidaDiarios.ejs", {veiculo: veiculo})
-
-    } else {
-        res.send("Esse veiculo nao foi encontrado");
+    } catch (error) {
+        console.log(error)
+        res.send("Erro ao buscar placa")
     }
 
 })

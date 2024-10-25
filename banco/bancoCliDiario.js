@@ -1,27 +1,15 @@
-const {Sequelize, DataTypes} = require("sequelize");
-const conection = require("./conexaoBanco");
+const mongoose = require("mongoose");
 
-var ClienteDiario = conection.define("diarios", {
-    placa:{ 
-        freezeTableName: true,
-        type: DataTypes.DATE
-    }, 
-    horaEntrada: {
-        freezeTableName: true,
-        type: DataTypes.TIME
-    }, 
-    horaSaida: {
-        freezeTableName: true,
-        type: DataTypes.TIME
-    }, 
-    valorPago: {
-        freezeTableName: true,
-        type: DataTypes.NUMBER
-    }, 
-    
-}); 
+var ClienteDiarioShema = new mongoose.Schema({
+    idEsta: Number,
+    placa: String,
+    horaEntrada: String,
+    horaSaida: String,
+    valorPago: Number,
+    vaga: Number
+})
 
-ClienteDiario.sync({force: false}).then(() =>{});
+const ClienteDiario = mongoose.model("diarios", ClienteDiarioShema);
 
 
 module.exports = ClienteDiario
